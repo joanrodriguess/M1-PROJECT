@@ -10,10 +10,9 @@ n = 287 #Number of museum images
 t = 30 #Number of queries
 k = 10 #Number of most similar images
 
-with open('./qsd1_w1/gt_corresps.pkl', 'rb') as f:
+db_path = "../../data"
+with open(db_path + '/qsd1_w1/gt_corresps.pkl', 'rb') as f:
     data = pickle.load(f)
-    print(data)
-
 
 exp_distances = []
 exp_intersections = []
@@ -23,9 +22,8 @@ exp_kernels = []
 for j in range(t):
     print(j)
 
-    img_file =  db_file = './qsd1_w1/00' + ('00' if j < 10 else '0') + str(j) + '.jpg'
+    img_file = db_path + '/qsd1_w1/00' + ('00' if j < 10 else '0') + str(j) + '.jpg'
     img = cv2.imread(img_file)
-
     #HSV color space
     hsv_img = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
     hist = cv2.calcHist([hsv_img], [0], None, [256], [0,256])
@@ -37,8 +35,8 @@ for j in range(t):
 
     for i in range(n):
         #Museum DB files
-        db_file = './BBDD/bbdd_00' + ('00' if i < 10 else ('0' if i < 100 else '')) + str(i) + '.jpg'
-        
+        db_file = db_path + '/BBDD/bbdd_00' + ('00' if i < 10 else ('0' if i < 100 else '')) + str(i) + '.jpg'
+
         db_img = cv2.imread(db_file)
 
         #XYZ color space
@@ -87,4 +85,5 @@ print("Histogram Intersection MAPK: ")
 print(mapk(data,exp_intersections, k))
 
 print("Hellinger kernel MAPK: ")
-print(mapk(data,exp_kernel, k))
+print(mapk(data,exp_kernels , k))
+
